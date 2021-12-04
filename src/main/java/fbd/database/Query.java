@@ -6,7 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.ResultSetMetaData;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,8 +70,37 @@ public class Query implements DatabaseOperation {
     }
 
     @Override
-    public ResultSet execute() throws SQLException {
-        return this.buildStatement().executeQuery();
+    public List<String> execute() throws SQLException {
+        ResultSet queryResult = this.buildStatement().executeQuery();
+        ResultSetMetaData metaData = queryResult.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        int rowCounter = 1;
+        
+        StringBuilder tupleBuilder = new StringBuilder();
+        ArrayList<String> table = new ArrayList<>();
+
+        tupleBuilder.append("# - ");
+        for (int i = 1; i <= columnCount; i++) {
+            tupleBuilder.append(metaData.getColumnName(i));
+            if (i + 1 <= columnCount)
+                tupleBuilder.append(" ; ");
+        }
+        
+        table.add(tupleBuilder.toString()); // add the header to the table
+        
+        while (queryResult.next()) {
+            tupleBuilder = new StringBuilder();
+            tupleBuilder.append(rowCounter).append(" - ");
+            for (int i = 1; i <= columnCount; i++) {
+                tupleBuilder.append(queryResult.getObject(i).toString());
+                if (i + 1 <= columnCount)
+                    tupleBuilder.append(" ; ");
+            }
+            table.add(tupleBuilder.toString()); // add the tuple to the table
+            rowCounter += 1;
+        }
+
+        return table;
     }
 
     @Override
@@ -78,7 +110,7 @@ public class Query implements DatabaseOperation {
         stringRepresentation.append(this.query);
         stringRepresentation.append(" : ").append("( ");
         for (int i = 1; i <= this.parameters.size(); i++) {
-            stringRepresentation.append(this.parameters.get(i).toString());
+            stringRepresentation.append(i).append("-").append(this.parameters.get(i).toString());
             if (i < this.parameters.size()) {
                 stringRepresentation.append(", ");
             }

@@ -12,8 +12,8 @@ import java.util.List;
 public class Database {
     private final List<String> history = new ArrayList<>();
 
-    public ResultSet executeOperation(DatabaseOperation database_op) throws SQLException {
-        ResultSet query_result = database_op.execute();
+    public List<String> executeOperation(DatabaseOperation database_op) throws SQLException {
+        List<String> query_result = database_op.execute();
         this.history.add(database_op.toString());
         return query_result;
     }

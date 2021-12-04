@@ -10,16 +10,20 @@ import java.util.logging.Logger;
  *
  * @author garren
  */
-public class ShowCreditsAction implements UIAction {
+public class ShowHelpAction implements UIAction{
 
     @Override
     public void execute() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder message = new StringBuilder();
         
-        message.append("#=======[ TEAM ]=======#\n");
-        message.append("> Made by Garren Souza & Vítor Vargas @ UFRGS | 2021 \n");
-        message.append("> Have a great day :)\n");
+        message.append("#=======[ HELP ]=======#\n");
+        message.append("| There are three main functionalities: Run query, edit query and see the activity history during the current session\n");
+        message.append("| Queries are presented as:\n");
+        message.append("| -> QueryID | SQL query with ? as placeholders for parameters : (parameter as SQL_Type, ... )\n");
+        message.append("| Parameters are shown in the order they are replaced when the query is processed\n");
+        message.append("| In order to run a query or to update some parameter you need to specify its ID and properly enter the desired information\n");
+        message.append("| That's it!\n");
         
         try {
             (new ClearScreenAction()).execute();

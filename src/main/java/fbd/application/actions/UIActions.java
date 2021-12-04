@@ -9,5 +9,6 @@ public enum UIActions {
     EDIT_QUERY,
     RUN_QUERY,
     SHOW_CREDITS,
-    SHOW_ACTIVITY
+    SHOW_ACTIVITY,
+    SHOW_HELP
 }

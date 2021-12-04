@@ -1,7 +1,5 @@
 package fbd.application.actions;
 
-import java.io.IOException;
-
 /**
  *
  * @author garren
@@ -10,16 +8,21 @@ public class ClearScreenAction implements UIAction {
 
     @Override
     public void execute() {
-        try {
-            final String os = System.getProperty("os.name");
-
-            if (os.contains("Windows")) {
-                Runtime.getRuntime().exec("cls");
+        try{
+            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
+              
+            if(operatingSystem.contains("Windows")){        
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
             } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (final IOException e) {
-            //  Handle exceptions
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            } 
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
 

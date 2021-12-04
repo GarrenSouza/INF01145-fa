@@ -31,25 +31,27 @@ public class EditQueryAction implements UIAction{
          */
         String userInput;
         boolean quit = false;
-        StringBuilder menu = new StringBuilder();
-        StringBuilder typeOptions = new StringBuilder();
+        
+        
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         
-        
-        menu.append("#=======[ EDIT ]=======#\n");
-        menu.append("| Avaliable Queries\n");
-        this.app.getQueryDescriptions().forEach(pair -> {menu.append("| -> ").append(pair.getValue0()).append(" | ").append(pair.getValue1()).append("\n");});
-        menu.append("| 1. Edit Query\n");
-        menu.append("| 2. Back\n");
-        menu.append("| Option:");
-        
-        typeOptions.append("| 1. String\n");
-        typeOptions.append("| 2. Integer\n");
-        typeOptions.append("| 3. Float\n");
-        typeOptions.append("| 4. Date\n");
+        StringBuilder typeOptions = new StringBuilder();
+        typeOptions.append("| Parameter SQL type\n");
+        typeOptions.append("| 1. VARCHAR\n");
+        typeOptions.append("| 2. INTEGER\n");
+        typeOptions.append("| 3. FLOAT\n");
+        typeOptions.append("| 4. DATE\n");
         typeOptions.append("| Option: ");
         
         do {
+            (new ClearScreenAction()).execute();
+            StringBuilder menu = new StringBuilder();
+            menu.append("#=======[ EDIT ]=======#\n");
+            menu.append("| Avaliable Queries\n");
+            this.app.getQueryDescriptions().forEach(pair -> {menu.append("| -> ").append(pair.getValue0()).append(" | ").append(pair.getValue1()).append("\n");});
+            menu.append("| 1. Edit Query\n");
+            menu.append("| 2. Back\n");
+            menu.append("| Option:");
             System.out.print(menu.toString());
             try {
                 userInput = reader.readLine();
@@ -78,7 +80,6 @@ public class EditQueryAction implements UIAction{
                             case 4 -> {
                                 parameter = new QueryParameter(Date.valueOf(value), QueryParameterType.DATE);
                             }
-
                         }
                         this.app.updateQueryParameter(queryID, parameter, parameterPosition);
                     }
