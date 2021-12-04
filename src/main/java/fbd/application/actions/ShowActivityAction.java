@@ -1,6 +1,7 @@
 package fbd.application.actions;
 
 import fbd.application.Application;
+import fbd.utils.Input;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,7 +23,6 @@ public class ShowActivityAction implements UIAction{
     
     @Override
     public void execute() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         List<String> activity = this.app.getActivityHistory();
         StringBuilder output = new StringBuilder();
         
@@ -34,7 +34,7 @@ public class ShowActivityAction implements UIAction{
         try {
             (new ClearScreenAction()).execute();
             System.out.print(output.toString());
-            reader.readLine();
+            Input.waitEnterKeyPress();
         } catch (IOException ex) {
             Logger.getLogger(ShowActivityAction.class.getName()).log(Level.SEVERE, null, ex);
         }

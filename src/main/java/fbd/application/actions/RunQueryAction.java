@@ -2,6 +2,7 @@ package fbd.application.actions;
 
 import fbd.application.Application;
 import fbd.database.exceptions.QueryNotFound;
+import fbd.utils.Input;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,7 +56,7 @@ public class RunQueryAction implements UIAction {
                         queryResult.forEach(tuple -> {
                             System.out.println(tuple);
                         });
-                        reader.readLine();
+                        Input.waitEnterKeyPress();
                     }
                     case 2 ->
                         quit = true;

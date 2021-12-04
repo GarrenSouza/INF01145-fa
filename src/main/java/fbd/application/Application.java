@@ -15,6 +15,7 @@ import fbd.database.Query;
 import fbd.database.QueryParameter;
 import fbd.database.exceptions.IllegalParameterUpdate;
 import fbd.database.exceptions.QueryNotFound;
+import fbd.utils.Input;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -80,8 +81,6 @@ public class Application {
 
     public static void main(String[] args) throws IllegalParameterUpdate, IOException{
         Application app = new Application();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String userInput;
         boolean quit = false;
 
         StringBuilder menu = new StringBuilder();
@@ -95,10 +94,10 @@ public class Application {
         menu.append("| > Option: ");
 
         while (!quit) {
+            app.actions.get(UIActions.CLEAR_SCREEN).execute();
             System.out.print(menu.toString());
-            userInput = reader.readLine();
 
-            int option = Integer.valueOf(userInput);
+            int option = Integer.valueOf(Input.readStringFromUserInput());
             switch (option) {
                 case 1 -> app.actions.get(UIActions.RUN_QUERY).execute();
                 case 2 -> app.actions.get(UIActions.EDIT_QUERY).execute();
@@ -106,8 +105,7 @@ public class Application {
                 case 4 -> app.actions.get(UIActions.SHOW_CREDITS).execute();
                 case 5 -> app.actions.get(UIActions.SHOW_HELP).execute();
                 case 6 -> quit = true;
-            }
-            app.actions.get(UIActions.CLEAR_SCREEN).execute();
+            }            
         }
     }
 }

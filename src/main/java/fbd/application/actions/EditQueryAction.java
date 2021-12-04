@@ -4,37 +4,30 @@ import fbd.application.Application;
 import fbd.database.QueryParameterType;
 import fbd.database.QueryParameter;
 import fbd.database.exceptions.IllegalParameterUpdate;
-import java.io.BufferedReader;
+import fbd.utils.Input;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.sql.Date;
 
 /**
  *
  * @author garren
  */
-public class EditQueryAction implements UIAction{
+public class EditQueryAction implements UIAction {
 
     private final Application app;
 
     public EditQueryAction(Application app) {
         this.app = app;
     }
-    
+
     @Override
     public void execute() {
         /**
-         * List queries
-         * Pick a query
-         * Update parameters
+         * List queries Pick a query Update parameters
          */
         String userInput;
         boolean quit = false;
-        
-        
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        
+
         StringBuilder typeOptions = new StringBuilder();
         typeOptions.append("| Parameter SQL type\n");
         typeOptions.append("| 1. VARCHAR\n");
@@ -42,32 +35,34 @@ public class EditQueryAction implements UIAction{
         typeOptions.append("| 3. FLOAT\n");
         typeOptions.append("| 4. DATE\n");
         typeOptions.append("| Option: ");
-        
+
         do {
             (new ClearScreenAction()).execute();
             StringBuilder menu = new StringBuilder();
             menu.append("#=======[ EDIT ]=======#\n");
             menu.append("| Avaliable Queries\n");
-            this.app.getQueryDescriptions().forEach(pair -> {menu.append("| -> ").append(pair.getValue0()).append(" | ").append(pair.getValue1()).append("\n");});
+            this.app.getQueryDescriptions().forEach(pair -> {
+                menu.append("| -> ").append(pair.getValue0()).append(" | ").append(pair.getValue1()).append("\n");
+            });
             menu.append("| 1. Edit Query\n");
             menu.append("| 2. Back\n");
             menu.append("| Option:");
             System.out.print(menu.toString());
             try {
-                userInput = reader.readLine();
+                userInput = Input.readStringFromUserInput();
                 int option = Integer.valueOf(userInput);
-                switch(option){
+                switch (option) {
                     case 1 -> {
                         System.out.print("| Enter the Query ID: ");
-                        String queryID = reader.readLine();
+                        String queryID = Input.readStringFromUserInput();
                         System.out.print("| Enter the parameter position (1-based): ");
-                        Integer parameterPosition = Integer.valueOf(reader.readLine());
+                        Integer parameterPosition = Integer.valueOf(Input.readStringFromUserInput());
                         System.out.print("| Enter the parameter value: ");
-                        String value = reader.readLine();
+                        String value = Input.readStringFromUserInput();
                         System.out.println(typeOptions.toString());
-                        option = Integer.valueOf(reader.readLine());
+                        option = Integer.valueOf(Input.readStringFromUserInput());
                         QueryParameter parameter = null;
-                        switch(option){
+                        switch (option) {
                             case 1 -> {
                                 parameter = new QueryParameter(value, QueryParameterType.VARCHAR);
                             }
@@ -83,14 +78,15 @@ public class EditQueryAction implements UIAction{
                         }
                         this.app.updateQueryParameter(queryID, parameter, parameterPosition);
                     }
-                    case 2 -> quit = true;
+                    case 2 ->
+                        quit = true;
                 }
             } catch (IOException ex) {
                 System.out.println("Some IO stuff went wrong... Let's try again!");
             } catch (IllegalParameterUpdate ex) {
                 System.out.println("Something went wrong with some of the updated parameters!");
             }
-        } while(!quit);
+        } while (!quit);
     }
-    
+
 }

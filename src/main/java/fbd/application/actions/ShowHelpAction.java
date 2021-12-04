@@ -1,5 +1,6 @@
 package fbd.application.actions;
 
+import fbd.utils.Input;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +15,6 @@ public class ShowHelpAction implements UIAction{
 
     @Override
     public void execute() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder message = new StringBuilder();
         
         message.append("#=======[ HELP ]=======#\n");
@@ -28,8 +28,8 @@ public class ShowHelpAction implements UIAction{
         try {
             (new ClearScreenAction()).execute();
             System.out.println(message.toString());
-            System.out.println("Press Enter to continue...");
-            reader.readLine();
+            System.out.print("Press Enter to continue...");
+            Input.waitEnterKeyPress();
         } catch (IOException ex) {
             Logger.getLogger(ShowCreditsAction.class.getName()).log(Level.SEVERE, null, ex);
         }
