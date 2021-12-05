@@ -52,8 +52,14 @@ public class Application {
         this.actions.put(UIActions.SHOW_HELP, new ShowHelpAction());
 
         // Queries setup
-        Query q1 = new Query(new String("SELECT * from fbd.addresses"));
+        Query q1 = new Query("SELECT * FROM fbd.coupons where type=\"relativo\" and amount > 10.0;");
+        Query q2 = new Query("SELECT products.name " +
+                                "FROM products " +
+                                "INNER JOIN belonging_pc on products.id = belonging_pc.fk_Products_id " +
+                                "INNER JOIN categories on categories.id = belonging_pc.fk_Categories_id WHERE categories.name = ?");
+
         this.operations.put("Q1", q1);
+        this.operations.put("Q2", q2);
     }
 
     public List<String> runDatabaseOperation(String queryID) throws SQLException, QueryNotFound {
@@ -79,7 +85,7 @@ public class Application {
         return query_descriptions;
     }
 
-    public static void main(String[] args) throws IllegalParameterUpdate, IOException{
+    public static void main(String[] args) throws IllegalParameterUpdate, IOException {
         Application app = new Application();
         boolean quit = false;
 
@@ -99,13 +105,19 @@ public class Application {
 
             int option = Integer.valueOf(Input.readStringFromUserInput());
             switch (option) {
-                case 1 -> app.actions.get(UIActions.RUN_QUERY).execute();
-                case 2 -> app.actions.get(UIActions.EDIT_QUERY).execute();
-                case 3 -> app.actions.get(UIActions.SHOW_ACTIVITY).execute();
-                case 4 -> app.actions.get(UIActions.SHOW_CREDITS).execute();
-                case 5 -> app.actions.get(UIActions.SHOW_HELP).execute();
-                case 6 -> quit = true;
-            }            
+                case 1 ->
+                    app.actions.get(UIActions.RUN_QUERY).execute();
+                case 2 ->
+                    app.actions.get(UIActions.EDIT_QUERY).execute();
+                case 3 ->
+                    app.actions.get(UIActions.SHOW_ACTIVITY).execute();
+                case 4 ->
+                    app.actions.get(UIActions.SHOW_CREDITS).execute();
+                case 5 ->
+                    app.actions.get(UIActions.SHOW_HELP).execute();
+                case 6 ->
+                    quit = true;
+            }
         }
     }
 }

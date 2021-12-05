@@ -45,26 +45,26 @@ public class RunQueryAction implements UIAction {
             (new ClearScreenAction()).execute();
             System.out.print(output.toString());
             try {
-                userInput = reader.readLine();
+                userInput = Input.readStringFromUserInput();
                 int option = Integer.valueOf(userInput);
                 switch (option) {
                     case 1 -> {
                         System.out.print("| Enter the Query ID: ");
-                        userInput = reader.readLine();
+                        userInput = Input.readStringFromUserInput();
                         List<String> queryResult = this.app.runDatabaseOperation(userInput);
-                        System.out.println("| Query Result:");
+                        System.out.println("> Query Result:");
                         queryResult.forEach(tuple -> {
                             System.out.println(tuple);
                         });
                         Input.waitEnterKeyPress();
                     }
-                    case 2 ->
+                    case 2 ->{
                         quit = true;
+                    }
                 }
             } catch (IOException ex) {
                 System.out.println("Some IO stuff went wrong... Let's try again!");
             } catch (SQLException ex) {
-                ex.printStackTrace();
                 System.out.println("Something went wrong with the database!");
             } catch (QueryNotFound ex) {
                 System.out.println("Invalid query selected!");

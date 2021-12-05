@@ -24,7 +24,6 @@ public class ShowCreditsAction implements UIAction {
         try {
             (new ClearScreenAction()).execute();
             System.out.println(message.toString());
-            System.out.print("Press Enter to continue...");
             Input.waitEnterKeyPress();
         } catch (IOException ex) {
             Logger.getLogger(ShowCreditsAction.class.getName()).log(Level.SEVERE, null, ex);
