@@ -1,5 +1,5 @@
 # INF01145-fa
-Final assignment for the UFRGS Database Fundamentals course\
+Final assignment for the UFRGS Database Fundamentals course
 
 # What is it?
 A simple SQL query client capable of editing and running queries against MySQL.
